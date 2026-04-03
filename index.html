@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Garena Mail UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body{
+      margin:0;
+      font-family:sans-serif;
+      background:linear-gradient(135deg,#020617,#0f172a,#1e293b);
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+    }
+    .box{
+      width:90%;
+      max-width:400px;
+      padding:30px;
+      border-radius:25px;
+      background:rgba(255,255,255,.08);
+      backdrop-filter:blur(15px);
+      box-shadow:0 20px 40px rgba(0,0,0,.4);
+    }
+    input,button{
+      width:100%;
+      padding:14px;
+      border:none;
+      border-radius:14px;
+      margin-top:12px;
+      font-size:16px;
+    }
+    input{background:rgba(255,255,255,.1);color:white;}
+    button{background:white;color:black;font-weight:bold;}
+    pre{
+      margin-top:20px;
+      background:rgba(0,0,0,.3);
+      padding:15px;
+      border-radius:12px;
+      font-size:12px;
+      white-space:pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>⚡ Garena Mail Sender</h2>
+    <input id="username" placeholder="Username">
+    <input id="email" placeholder="Email">
+    <button onclick="sendCode()">Send Code</button>
+    <pre id="result"></pre>
+  </div>
+
+  <script>
+    async function sendCode(){
+      const username=document.getElementById("username").value;
+      const email=document.getElementById("email").value;
+      const result=document.getElementById("result");
+
+      result.textContent="Sending...";
+
+      const res=await fetch("/api/send",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({username,email})
+      });
+
+      const data=await res.json();
+      result.textContent=JSON.stringify(data,null,2);
+    }
+  </script>
+</body>
+</html>
